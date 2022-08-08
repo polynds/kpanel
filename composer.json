@@ -1,0 +1,42 @@
+{
+  "name": "polynds/kpanel",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "hyperf"
+  ],
+  "description": "A cool service monitoring panel.",
+  "autoload": {
+    "psr-4": {
+      "Polynds\\KPanel\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "polynds",
+      "email": "2910508410@qq.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "swoole/ide-helper": "~4.8.10",
+    "friendsofphp/php-cs-fixer": "^3.0",
+    "phpstan/phpstan": "^1.0"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "scripts": {
+    "analyse": "phpstan analyse --memory-limit 1000M -c phpstan.neon",
+    "cs-fix": "php-cs-fixer fix $1",
+    "start": "php ./bin/hyperf.php start",
+    "test": "co-phpunit --prepend test/bootstrap.php -c phpunit.xml --colors=always"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "secure-http": false
+  }
+}
