@@ -4,36 +4,48 @@ declare(strict_types=1);
 /**
  * happy coding.
  */
-namespace Polynds\KPanel\Lib\DI;
+namespace KPanel\Lib\DI;
 
-use Psr\Container\ContainerInterface;
+use KPanel\Lib\DI\Resolver\DefinitionResolver;
+use KPanel\Lib\DI\Resolver\ObjectResolver;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 
 class Container implements ContainerInterface
 {
-    protected array $instance;
+    protected array $resolvedEntries = [];
 
-    public static function __callStatic($method, $arguments)
+    protected DefinitionResolver $resolver;
+
+    public function __construct()
     {
-        return (new static())->{$method}(...$arguments);
+        $this->resolvedEntries = [
+            self::class => $this,
+            ContainerInterface::class => $this,
+            PsrContainerInterface::class => $this,
+        ];
+        $this->resolver = new ObjectResolver($this);
     }
 
-    public function make(string $name, array $parameters = [])
+    public function make(string $id, array $parameters = [])
     {
-        $this->instance[$name] = (new $name(...$parameters));
+        return new $id(...$parameters);
     }
 
-    public function set(string $name, $entry): void
+    public function set(string $id, $entry): void
     {
-        $this->instance[$name] = $entry;
+        $this->resolvedEntries[$id] = $entry;
     }
 
     public function get(string $id)
     {
-        return $this->instance[$id];
+        if (isset($this->resolvedEntries[$id])) {
+            return $this->resolvedEntries[$id];
+        }
+        return $this->resolvedEntries[$id] = $this->resolver->resolve($id);
     }
 
     public function has(string $id): bool
     {
-        return array_key_exists($id, $this->instance[$id]);
+        return array_key_exists($id, $this->resolvedEntries);
     }
 }

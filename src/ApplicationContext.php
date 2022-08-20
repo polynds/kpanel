@@ -4,15 +4,15 @@ declare(strict_types=1);
 /**
  * happy coding.
  */
-namespace Polynds\KPanel;
+namespace KPanel;
 
-use Polynds\KPanel\Lib\DI\Container;
+use KPanel\Lib\DI\ContainerInterface;
 
 class ApplicationContext
 {
-    protected static ?Container $container;
+    protected static ?ContainerInterface $container;
 
-    public static function getContainer(): Container
+    public static function getContainer(): ContainerInterface
     {
         return self::$container;
     }
@@ -22,7 +22,7 @@ class ApplicationContext
         return ! is_null(self::$container);
     }
 
-    public static function setContainer(Container $container): Container
+    public static function setContainer(ContainerInterface $container): ContainerInterface
     {
         self::$container = $container;
         return $container;

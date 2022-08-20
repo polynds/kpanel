@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * happy coding!!!
  */
-namespace Polynds\KPanel\Server;
+namespace KPanel\Server;
 
 class ServerConfig
 {

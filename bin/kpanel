@@ -9,21 +9,16 @@ set_error_handler(static function ($severity, $message, $file, $line) {
     if ($severity & error_reporting()) {
         throw new ErrorException($message, 0, $severity, $file, $line);
     }
+    return false;
 });
 
 ! defined('BASE_PATH') && define('BASE_PATH', dirname(__DIR__, 1));
-! defined('APP_PATH') && define('APP_PATH', BASE_PATH . '/src');
+! defined('APP_PATH') && defined('BASE_PATH') && define('APP_PATH', BASE_PATH . '/src');
+! defined('SWOOLE_HOOK_FLAGS') && defined('SWOOLE_HOOK_ALL') && define('SWOOLE_HOOK_FLAGS', SWOOLE_HOOK_ALL);
 
 require BASE_PATH . '/vendor/autoload.php';
 
-$container = new Polynds\KPanel\Lib\DI\Container();
-Polynds\KPanel\ApplicationContext::setContainer($container);
-
 (static function () {
-    Polynds\KPanel\ApplicationContext::getContainer()->set(Polynds\KPanel\Lib\Config::class, new Polynds\KPanel\Lib\Config());
-    Polynds\KPanel\ApplicationContext::getContainer()->set(Polynds\KPanel\Lib\Event\EventDispatcher::class, new Polynds\KPanel\Lib\Event\EventDispatcher());
-    Polynds\KPanel\ApplicationContext::getContainer()->set(Polynds\KPanel\Lib\Logger::class, new Polynds\KPanel\Lib\Logger());
+    KPanel\ApplicationContext::setContainer(new KPanel\Lib\DI\Container());
+    (new KPanel\Application())->run();
 })();
-
-$app = new Polynds\KPanel\Application();
-$app->run();

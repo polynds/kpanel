@@ -8,6 +8,6 @@ namespace KPanel\Exception;
 
 use Exception;
 
-class ConfigFileNotFoundException extends Exception
+class ListenerNotExistException extends Exception
 {
 }

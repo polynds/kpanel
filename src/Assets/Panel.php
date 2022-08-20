@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 /**
- * happy coding!!!
+ * happy coding.
  */
 
-namespace Polynds\KPanel\Assets;
+namespace KPanel\Assets;
 
 class Panel
 {
@@ -24,6 +24,20 @@ class Panel
 <h1>Swoole WebSocket Server</h1>
 <div id="container"></div>
 <script>
+
+let ws_api = {
+    stat_cpu:()=>{
+        return JSON.stringify({
+            cmd:'call',
+            action:'stat/cpu',
+            data:'',
+            message:''
+        });
+    },
+};
+
+
+let stat_cpu = 'stat/cpu';
 let lockReconnect = false; //避免ws重复连接
 let ws = null; // 判断当前浏览器是否支持WebSocket
 let wsUrl = null;
@@ -32,7 +46,7 @@ let config = {
     open: (ws) => {
         function sendNumber() {
             if (ws.readyState === ws.OPEN) {
-                ws.send('getData');
+                ws.send(ws_api.stat_cpu());
                 setTimeout(sendNumber, 1000);
             }
         }
@@ -77,7 +91,7 @@ function initEventHandle() {
         console.log("llws连接错误!");
     };
     ws.onopen = function() {
-        ws.send('getData');
+        ws.send(ws_api.stat_cpu());
         heartCheck.reset().start();
         console.log("llws连接成功!" + new Date().toUTCString());
         config.open(ws);

@@ -4,22 +4,35 @@ declare(strict_types=1);
 /**
  * happy coding.
  */
-namespace Polynds\KPanel\Lib\Event;
+namespace KPanel\Lib\Event;
 
-use Polynds\KPanel\Lib\Config;
-use Polynds\KPanel\ApplicationContext;
+use KPanel\Exception\ListenerNotExistException;
+use KPanel\Lib\Config\ConfigInterface;
+use KPanel\Lib\DI\ContainerInterface;
 
 class EventDispatcherFactory
 {
-    public static function collect()
+    protected EventDispatcher $eventDispatcher;
+
+    protected ContainerInterface $container;
+
+    protected ConfigInterface $config;
+
+    public function __construct(EventDispatcher $eventDispatcher, ContainerInterface $container, ConfigInterface $config)
     {
-        /** @var EventDispatcher $eventDispatcher */
-        $eventDispatcher = ApplicationContext::getContainer()->get(EventDispatcher::class);
-        /** @var Config $config */
-        $config = ApplicationContext::getContainer()->get(Config::class);
-        $listeners = $config->get('listeners');
+        $this->eventDispatcher = $eventDispatcher;
+        $this->container = $container;
+        $this->config = $config;
+    }
+
+    public function collect()
+    {
+        $listeners = $this->config->get('listeners');
         foreach ($listeners as $listener) {
-            $eventDispatcher->addListeners(new $listener);
+            if (! class_exists($listener)) {
+                throw new ListenerNotExistException();
+            }
+            $this->eventDispatcher->addListeners($this->container->get($listener));
         }
     }
 }

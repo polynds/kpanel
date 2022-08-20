@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * happy coding.
  */
-namespace Polynds\KPanel\Lib\Event;
+namespace KPanel\Lib\Event;
 
 interface ListenerInterface
 {

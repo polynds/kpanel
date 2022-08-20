@@ -9,17 +9,18 @@
   "description": "A cool service monitoring panel.",
   "autoload": {
     "psr-4": {
-      "Polynds\\KPanel\\": "src/"
+      "KPanel\\": "src/"
     }
   },
   "authors": [
     {
-      "name": "polynds",
+      "name": "kuangjian",
       "email": "2910508410@qq.com"
     }
   ],
   "require": {
-    "php": ">=7.4"
+    "php": ">=7.4",
+    "ext-json": "*"
   },
   "require-dev": {
     "swoole/ide-helper": "~4.8.10",

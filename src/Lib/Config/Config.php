@@ -4,12 +4,11 @@ declare(strict_types=1);
 /**
  * happy coding.
  */
-namespace Polynds\KPanel\Lib;
+namespace KPanel\Lib\Config;
 
-class Config
+class Config implements ConfigInterface
 {
-
-    protected string $configPath = APP_PATH . '/config/kpanel.php';
+    protected string $configPath = APP_PATH . '/Config/kpanel.php';
 
     protected array $configs;
 
